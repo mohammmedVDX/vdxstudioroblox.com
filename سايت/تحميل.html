@@ -73,20 +73,45 @@
 </head>
 <body>
   <div class="top-bar">
-    <img src="path_to_logo.png" alt="Logo">
+    <img src="vdx.jpg" alt="Logo">
   </div>
   <div class="container">
     <div class="download-section">
-      <h1>Download Page</h1>
-      <p>Select an option:</p>
-      <select>
-        <option>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 3</option>
+      <h1>تحميل اكس او</h1>
+      <p>اختر جهازك:</p>
+      <select id="download-select">
+        <option value="">جهازك</option>
+        <option value="option1">بي سي</option>
+        <option value="option2">اندرويد</option>
       </select>
       <br>
-      <button>Download</button>
+      <button id="download-button" disabled>Download</button>
     </div>
   </div>
+
+  <script>
+    document.getElementById('download-select').addEventListener('change', function() {
+      var selectedOption = this.value;
+      var downloadButton = document.getElementById('download-button');
+
+      if (selectedOption === 'option1') {
+        downloadButton.innerHTML = 'تحميل';
+        downloadButton.removeAttribute('disabled');
+        downloadButton.setAttribute('onclick', 'window.location.href = "https://www.mediafire.com/file/rcb7d1kepgx5vtd/TIc_tacToe.exe/file";');
+      } else if (selectedOption === 'option2') {
+        downloadButton.innerHTML = 'تحميل';
+        downloadButton.removeAttribute('disabled');
+        downloadButton.setAttribute('onclick', 'window.location.href = "https://www.mediafire.com/file/n0vvi7gpkdg92mq/TIc+tacToe.apk/file";');
+      } else if (selectedOption === 'option3') {
+        downloadButton.innerHTML = 'Download Option 3';
+        downloadButton.removeAttribute('disabled');
+        downloadButton.setAttribute('onclick', 'window.location.href = "path_to_option3_file.exe";');
+      } else {
+        downloadButton.innerHTML = 'Download';
+        downloadButton.setAttribute('disabled', 'disabled');
+        downloadButton.removeAttribute('onclick');
+      }
+    });
+  </script>
 </body>
 </html>
