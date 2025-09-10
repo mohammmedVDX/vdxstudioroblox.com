@@ -1,153 +1,509 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
-  <title>محرك بحث محتوى</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-  body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      /* Set background image */
-      background-image: url('your-image.jpg');
-      background-size: cover; /* Cover the entire container */
-      background-position: center; /* Center the background image */
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    #searchInput {
-      width: 100%;
-      font-size: 16px;
-      padding: 10px;
-      border: 1px solid #000000;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-    #searchResults {
-      margin-top: 20px;
-      border: 1px solid #000000;
-      border-radius: 5px;
-      padding: 10px;
-    }
-    #searchResults div {
-      margin-bottom: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أفلام VDX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #fff;
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        
+        header {
+            background: linear-gradient(to right, #ff8a00, #ff2070);
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        .movie-card {
+            background: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .movie-header {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .movie-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .movie-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .movie-info {
+            padding: 15px;
+        }
+        
+        .episodes {
+            margin-top: 15px;
+        }
+        
+        .episode-list {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .episode-item {
+            flex: 0 0 auto;
+            width: 120px;
+            background: #2c2c2c;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .episode-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .episode-item.active {
+            border: 2px solid #ff8a00;
+        }
+        
+        .episode-item img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+        }
+        
+        .episode-info {
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .player {
+            margin-top: 20px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .video-container {
+            width: 100%;
+            position: relative;
+            background: #000;
+            height: 300px;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+        
+        .player-controls {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+        }
+        
+        .play-btn {
+            background: #ff8a00;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .play-btn:hover {
+            background: #ff9a29;
+        }
+        
+        .time-display {
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 15px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .category {
+            flex: 0 0 auto;
+            padding: 8px 15px;
+            background: #2c2c2c;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .category.active {
+            background: #ff8a00;
+        }
+        
+        footer {
+            background: #1a1a1a;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        /* تحسينات للشريط العلوي */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        
+        .nav-icon {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .search-bar {
+            background: #2c2c2c;
+            margin: 10px 15px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            color: #888;
+            cursor: pointer;
+        }
+        
+        .season-selector {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        
+        .season-btn {
+            flex: 0 0 auto;
+            padding: 8px 15px;
+            background: #2c2c2c;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .season-btn.active {
+            background: #ff8a00;
+        }
+        
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            height: 5px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ff8a00;
+            border-radius: 10px;
+        }
+        
+        /* تحسينات للجوال */
+        @media (max-width: 768px) {
+            .movie-header {
+                height: 180px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .video-container {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-container {
+                height: 200px;
+            }
+        }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>محرك بحث محتوى</h1>
-    <input type="text" id="searchInput" placeholder="ابحث عن محتوى..." />
-    <div id="searchResults"></div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var searchInput = document.getElementById('searchInput');
-      var contentDatabase = [
-      {
-          topic: 'فضل التوبة',
-          content: 'قال رسول الله صلى الله عليه وسلم: "إن الله يفرح بتوبة عبده أكثر مما يفرح أحدكم بضالته إذا وجدها". (رواه البخاري)'
-        },
-        {
-          topic: 'حفظ اللسان',
-          content: 'قال رسول الله صلى الله عليه وسلم: "من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت". (رواه البخاري)'
-        },
-        {
-          topic: 'فضل الذكر',
-          content: 'قال رسول الله صلى الله عليه وسلم: "لا يزال لسان المؤمن رطبًا من ذكر الله". (رواه الترمذي)'
-        },
-        {
-          topic: 'حفظ الأمانة',
-          content: 'قال رسول الله صلى الله عليه وسلم: "لا إيمان لمن لا أمانة له، ولا دين لمن لا عهد له". (رواه أحمد)'
-        },
-        {
-          topic: 'آداب الطعام',
-          content: 'قال رسول الله صلى الله عليه وسلم: "إذا أكل أحدكم فليذكر اسم الله تعالى، وإذا انتهى فليحمده". (رواه أبو داود)'
-        },
-        {
-          topic: 'فضل الصدقة',
-          content: 'قال رسول الله صلى الله عليه وسلم: "تصدّق ولو بشق تمرة، فإنها تقي من النار". (رواه البخاري)'
-        },
-        {
-          topic: 'الصبر على البلاء',
-          content: 'قال رسول الله صلى الله عليه وسلم: "عجبًا لأمر المؤمن، إن أمره كله خير، وليس ذلك لأحد إلا للمؤمن". (رواه مسلم)'
-        },
-        {
-          topic: 'فضل الصلاة',
-          content: 'قال رسول الله صلى الله عليه وسلم: "الصلاة نور". (رواه مسلم)'
-        },
-        {
-          topic: 'حسن الخلق',
-          content: 'قال رسول الله صلى الله عليه وسلم: "إن من أحبكم إليّ وأقربكم مني مجلسًا يوم القيامة أحاسنكم أخلاقًا". (رواه الترمذي)'
-        },
-        {
-          topic: 'الرحمة بالخلق',
-          content: 'قال رسول الله صلى الله عليه وسلم: "الراحمون يرحمهم الرحمن، ارحموا من في الأرض يرحمكم من في السماء". (رواه أبو داود)'
-        },
-        {
-          topic: 'فضل العلم',
-          content: 'قال رسول الله صلى الله عليه وسلم: "من سلك طريقًا يلتمس فيه علمًا، سهّل الله له به طريقًا إلى الجنة". (رواه مسلم)'
-        },
-        {
-          topic: 'الأمر بالمعروف والنهي عن المنكر',
-          content: 'قال رسول الله صلى الله عليه وسلم: "من رأى منكم منكرًا فليغيره بيده، فإن لم يستطع فبلسانه، فإن لم يستطع فبقلبه، وذلك أضعف الإيمان". (رواه مسلم)'
-        },
-        {
-          topic: 'فضل الجهاد',
-          content: 'قال رسول الله صلى الله عليه وسلم: "الجهاد في سبيل الله أفضل الأعمال". (رواه البخاري)'
-        },
-        {
-          topic: 'الحث على الصدق',
-          content: 'قال رسول الله صلى الله عليه وسلم: "عليكم بالصدق، فإن الصدق يهدي إلى البر، وإن البر يهدي إلى الجنة". (رواه مسلم)'
-        },
-        {
-          topic: 'فضل الإحسان',
-          content: 'قال رسول الله صلى الله عليه وسلم: "الإحسان أن تعبد الله كأنك تراه، فإن لم تكن تراه فإنه يراك". (رواه مسلم)'
-        },
-        {
-          topic: 'الحث على الصبر',
-          content: 'قال رسول الله صلى الله عليه وسلم: "ما أصاب المؤمن من نصب ولا وصب ولا هم ولا حزن ولا أذى ولا غم، حتى الشوكة يشاكها، إلا كفّر الله بها من خطاياه". (رواه البخاري)'
-        },
-        {
-          topic: 'فضل الدعاء',
-          content: 'قال رسول الله صلى الله عليه وسلم: "الدعاء هو العبادة". (رواه الترمذي)'
-        },
-        {
-          topic: 'الحث على الإخلاص',
-          content: 'قال رسول الله صلى الله عليه وسلم: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى". (رواه البخاري)'
-        },
-        {
-          topic: 'فضل الإيثار والتواضع',
-          content: 'قال رسول الله صلى الله عليه وسلم: "من تواضع لله رفعه الله". (رواه مسلم)'
-        },
+    <header>
+        <div class="logo">أفلام VDX</div>
+    </header>
     
-      ];
+    <div class="nav">
+        <div class="nav-icon">☰</div>
+        <div class="nav-icon">🔍</div>
+    </div>
+    
+    <div class="search-bar">
+        <span>ابحث عن فيلم أو مسلسل...</span>
+    </div>
+    
+    <div class="categories">
+        <div class="category active">الرئيسية</div>
+        <div class="category">أفلام</div>
+        <div class="category">مسلسلات</div>
+        <div class="category">أكشن</div>
+        <div class="category">دراما</div>
+        <div class="category">كوميدي</div>
+    </div>
+    
+    <div class="container">
+        <div class="movie-card">
+            <div class="movie-header">
+                <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/6sJcV5GM7aPHZoeC9aetJ4M2kyp.jpg'); background-size: cover; height: 100%;"></div>
+                <div class="movie-title">Oz - الموسم 1</div>
+            </div>
+            
+            <div class="movie-info">
+                <p>مسلسل أكشن تشويقي من انتاج عربي. قصة المسلسل تدور حول عالم الجريمة والغموض في مدينة خيالية.</p>
+                
+                <div class="season-selector">
+                    <div class="season-btn active">الموسم 1</div>
+                    <div class="season-btn">الموسم 2</div>
+                    <div class="season-btn">الموسم 3</div>
+                </div>
+                
+                <div class="episodes">
+                    <h3>حلقات الموسم الأول</h3>
+                    <div class="episode-list">
+                        <div class="episode-item active" data-episode="1">
+                            <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/6sJcV5GM7aPHZoeC9aetJ4M2kyp.jpg'); background-size: cover; height: 80px;"></div>
+                            <div class="episode-info">الحلقة 1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player">
+                    <div class="video-container">
+                        <video id="mainVideo" class="jw-video jw-reset" tabindex="-1" disableremoteplayback webkit-playsinline playsinline controls>
+                            <source src="https://rfognbc0mhhj.premilkyway.com/vp/01/08525/qiecn2pxcijz_h/Oz.S01E01.EgyDead.CoM.mp4?t=ThrFV6EpZUDbbcBvM4TxWBE5GE2HNgeceFiaNjiC6UY&s=1757531021&e=129600&f=42629963&sp=400&i=145.82&srv=KsLkgBWej56z" type="video/mp4">
+                            متصفحك لا يدعم تشغيل الفيديو
+                        </video>
+                        <div class="loading" id="loadingText">جاري تحميل الفيديو...</div>
+                    </div>
+                    <div class="player-controls">
+                        <button class="play-btn" id="playButton">
+                            <i class="fas fa-play"></i> تشغيل
+                        </button>
+                        <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2>أفلام مقترحة</h2>
+        <div class="episode-list">
+            <div class="episode-item">
+                <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/8SAWtONZz5IObHdPw0kdpt2rqUH.jpg'); background-size: cover; height: 80px;"></div>
+                <div class="episode-info">فيلم 1</div>
+            </div>
+            <div class="episode-item">
+                <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/dcnSWFCtk4b7zSwczAG5Urvdq6Q.jpg'); background-size: cover; height: 80px;"></div>
+                <div class="episode-info">فيلم 2</div>
+            </div>
+            <div class="episode-item">
+                <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/6sJcV5GM7aPHZoeC9aetJ4M2kyp.jpg'); background-size: cover; height: 80px;"></div>
+                <div class="episode-info">فيلم 3</div>
+            </div>
+            <div class="episode-item">
+                <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/8SAWtONZz5IObHdPw0kdpt2rqUH.jpg'); background-size: cover; height: 80px;"></div>
+                <div class="episode-info">فيلم 4</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 أفلام VDX - جميع الحقوق محفوظة</p>
+        <p>تصميم متجاوب للهواتف الذكية</p>
+    </footer>
 
-      searchInput.addEventListener('input', function() {
-        var searchTerm = this.value.toLowerCase();
-        var matchingContent = contentDatabase.filter(function(item) {
-          return item.topic.toLowerCase().includes(searchTerm);
+    <script>
+        // تفعيل زر التشغيل
+        const playButton = document.getElementById('playButton');
+        const video = document.getElementById('mainVideo');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const loadingText = document.getElementById('loadingText');
+        let isPlaying = false;
+        
+        // إخفاء نص التحميل عند بدء التشغيل
+        video.addEventListener('loadeddata', function() {
+            loadingText.style.display = 'none';
+            video.style.display = 'block';
+            timeDisplay.textContent = '00:00 / ' + formatTime(video.duration);
         });
-
-        var resultsElement = document.getElementById('searchResults');
-        resultsElement.innerHTML = '';
-
-        matchingContent.forEach(function(item) {
-          var resultElement = document.createElement('div');
-          resultElement.textContent = item.content;
-          resultsElement.appendChild(resultElement);
+        
+        // إظهار نص التحميل عند الانتظار
+        video.addEventListener('waiting', function() {
+            loadingText.style.display = 'block';
         });
-      });
-
-      searchInput.addEventListener('blur', function() {
-        var resultsElement = document.getElementById('searchResults');
-        resultsElement.innerHTML = '';
-      });
-    });
-  </script>
+        
+        // إخفاء نص التحميل عند استئناف التشغيل
+        video.addEventListener('playing', function() {
+            loadingText.style.display = 'none';
+        });
+        
+        playButton.addEventListener('click', function() {
+            if (isPlaying) {
+                video.pause();
+                playButton.innerHTML = '<i class="fas fa-play"></i> تشغيل';
+            } else {
+                video.play().catch(e => {
+                    // في حالة فشل التشغيل التلقائي (بسبب سياسات المتصفح)
+                    alert('لا يمكن تشغيل الفيديو تلقائياً. يرجى النقر على زر التشغيل في مشغل الفيديو.');
+                });
+                playButton.innerHTML = '<i class="fas fa-pause"></i> إيقاف';
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // تحديث حالة الزر عند انتهاء الفيديو
+        video.addEventListener('ended', function() {
+            isPlaying = false;
+            playButton.innerHTML = '<i class="fas fa-play"></i> تشغيل';
+        });
+        
+        // تحديث حالة الزر عند إيقاف الفيديو يدوياً
+        video.addEventListener('pause', function() {
+            isPlaying = false;
+            playButton.innerHTML = '<i class="fas fa-play"></i> تشغيل';
+        });
+        
+        // تحديث حالة الزر عند تشغيل الفيديو
+        video.addEventListener('play', function() {
+            isPlaying = true;
+            playButton.innerHTML = '<i class="fas fa-pause"></i> إيقاف';
+        });
+        
+        // تحديث الوقت أثناء التشغيل
+        video.addEventListener('timeupdate', function() {
+            const currentTime = formatTime(video.currentTime);
+            const duration = formatTime(video.duration);
+            timeDisplay.textContent = `${currentTime} / ${duration}`;
+        });
+        
+        // دالة لتحويل الثواني إلى تنسيق الوقت
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // كيفية إضافة حلقات جديدة (لأغراض التوضيح)
+        function addEpisode(episodeNum, isActive = false) {
+            const episodeList = document.querySelector('.episode-list');
+            const newEpisode = document.createElement('div');
+            newEpisode.className = isActive ? 'episode-item active' : 'episode-item';
+            newEpisode.dataset.episode = episodeNum;
+            newEpisode.innerHTML = `
+                <div style="background:linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://image.tmdb.org/t/p/w500/6sJcV5GM7aPHZoeC9aetJ4M2kyp.jpg'); background-size: cover; height: 80px;"></div>
+                <div class="episode-info">الحلقة ${episodeNum}</div>
+            `;
+            episodeList.appendChild(newEpisode);
+            
+            // إضافة حدث النقر للحلقة الجديدة
+            newEpisode.addEventListener('click', function() {
+                document.querySelectorAll('.episode-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+                alert(`تم اختيار الحلقة ${this.dataset.episode}`);
+                // هنا يمكنك تغيير مصدر الفيديو للحلقة المحددة
+            });
+        }
+        
+        // إضافة أحداث لأزرار الموسم
+        document.querySelectorAll('.season-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.season-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+                alert(`تم اختيار ${this.textContent}`);
+            });
+        });
+        
+        // إضافة أحداث للفئات
+        document.querySelectorAll('.category').forEach(cat => {
+            cat.addEventListener('click', function() {
+                document.querySelectorAll('.category').forEach(c => {
+                    c.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        console.log("لإضافة حلقات جديدة، استخدم الدالة addEpisode() في console");
+        console.log("مثال: addEpisode(2) - لإضافة الحلقة الثانية");
+    </script>
 </body>
 </html>
